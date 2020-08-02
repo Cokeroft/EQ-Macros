@@ -97,6 +97,7 @@ Sub cycletarget
 					/delay 2s
 					}
 				/goto :finished
+				}
 			:finished
 		/next p
    /if (!${Me.Sitting}) /sit on
