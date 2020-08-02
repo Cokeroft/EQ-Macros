@@ -1,0 +1,76 @@
+|--------------------------------------------------------------------------------
+| buff1 = DS
+| Use the exact name of your spell and have it loaded on your spell gems
+|--------------------------------------------------------------------------------
+
+#warning
+#turbo 80
+#include spell_routines.inc
+
+Sub Main
+/declare buff1 string outer Shield of Lava
+
+
+	:mainloop
+	/call cycletarget
+	/goto :mainloop
+
+/return
+
+|--------------------------------------------------------------------------------	
+Sub cycletarget
+|--------------------------------------------------------------------------------
+/declare p int local 1
+/declare players int local ${SpawnCount[pc radius 150]}
+/echo Found ${players} to buff!
+
+		/for p 1 to ${players}
+			/target id ${NearestSpawn[${p}, pc radius 150].ID}
+			/delay 5
+			/if (${Select[${Target.Class.ShortName},WAR,SHD,PAL]}>0) {
+				/delay 2s ${Target.Buff[${buff1}].ID}
+				/if (!${Target.Buff[${buff1}].ID} && ${Target.Type.Equal[PC]}) {
+					/call buff1
+					/delay 2s
+					}
+				/goto :finished
+				}
+			:finished
+		/next p
+   /if (!${Me.Sitting}) /sit on
+/return
+
+|--------------------------------------------------------------------------------	
+Sub buff1
+|--------------------------------------------------------------------------------
+    /casting "${buff1}"
+	/call CheckCasting
+	/call CheckGlobalCooldown
+/return
+
+|--------------------------------------------------------------------------------
+Sub CheckCasting
+|--------------------------------------------------------------------------------
+
+		/if (${Me.Casting.ID}) {
+			/echo *** Waiting to finish casting. ***
+		:WaitForCasting
+			/delay 1s
+			/if (${Me.Casting.ID}) /goto :WaitForCasting
+		}
+
+		/return
+
+|---------------------------------------------------------------------------------
+| SUB: Check Global Cooldown
+|---------------------------------------------------------------------------------
+Sub CheckGlobalCooldown
+
+/if (${Me.SpellInCooldown}) {
+    /echo *** Waiting on global spell cool down. ***
+    :WaitForCooldown
+    /delay 5
+    /if (${Me.SpellInCooldown}) /goto :WaitForCooldown
+}
+
+/return	
