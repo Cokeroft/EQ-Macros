@@ -98,9 +98,10 @@ Sub cycletarget
 					}
 				/goto :finished
 				}
+			
 			:finished
+		/if (!${Me.Sitting}) /sit on
 		/next p
-   /if (!${Me.Sitting}) /sit on
 /return
 
 |--------------------------------------------------------------------------------	
