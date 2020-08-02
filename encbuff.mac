@@ -33,6 +33,7 @@ Sub cycletarget
 				/if (${Select[${Target.Class.ShortName},SHM,CLR,ENC,DRU]}>0) {
 					/delay 2s ${Target.Buff[${buff1}].ID}
 					/if (!${Target.Buff[${buff1}].ID} && ${Target.Type.Equal[PC]}) {
+						/echo *** Casting ${buff1} on ${NearestSpawn[${p}, pc radius 150].Name} ***
 						/call buff1
 						/delay 2s
 						/goto :finished
@@ -41,6 +42,7 @@ Sub cycletarget
 				/if (${Select[${Target.Class.ShortName},ROG,MNK]}>0) {
 					/delay 2s ${Target.Buff[${buff2}].ID}
 					/if (!${Target.Buff[${buff2}].ID} && ${Target.Type.Equal[PC]}) {
+						/echo *** Casting ${buff2} on ${NearestSpawn[${p}, pc radius 150].Name} ***
 						/call buff2
 						/delay 2s
 						/goto :finished
@@ -50,10 +52,12 @@ Sub cycletarget
 					/delay 2s ${Target.Buff[${buff1}].ID} 
 					/delay 2s ${Target.Buff[${buff2}].ID}
 					/if (!${Target.Buff[${buff1}].ID} && ${Target.Type.Equal[PC]}) {
+						/echo *** Casting ${buff1} on ${NearestSpawn[${p}, pc radius 150].Name} ***
 						/call buff1
 						/delay 2s
 						}
 					/if (!${Target.Buff[${buff2}].ID} && ${Target.Type.Equal[PC]}) {
+						/echo *** Casting ${buff2} on ${NearestSpawn[${p}, pc radius 150].Name} ***
 						/call buff2
 						/delay 2s
 						}

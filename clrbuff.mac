@@ -37,14 +37,17 @@ Sub cycletarget
 				/delay 2s ${Target.Buff[${buff2}].ID}
 				/delay 2s ${Target.Buff[${buff3}].ID}
 				/if (!${Target.Buff[${buff1}].ID} && ${Target.Type.Equal[PC]}) {
+					/echo *** Casting ${buff1} on ${NearestSpawn[${p}, pc radius 150].Name} ***
 					/call buff1
 					/delay 2s
 					}
 				/if (!${Target.Buff[${buff2}].ID} && ${Target.Type.Equal[PC]}) {
+					/echo *** Casting ${buff2} on ${NearestSpawn[${p}, pc radius 150].Name} ***
 					/call buff2
 					/delay 2s
 					}
 				/if (!${Target.Buff[${buff3}].ID} && ${Target.Type.Equal[PC]}) {
+					/echo *** Casting ${buff3} on ${NearestSpawn[${p}, pc radius 150].Name} ***
 					/call buff3
 					/delay 2s
 					}
@@ -54,10 +57,12 @@ Sub cycletarget
 				/delay 2s ${Target.Buff[${buff1}].ID}
 				/delay 2s ${Target.Buff[${buff2}].ID}
 				/if (!${Target.Buff[${buff1}].ID} && ${Target.Type.Equal[PC]}) {
+					/echo *** Casting ${buff1} on ${NearestSpawn[${p}, pc radius 150].Name} ***
 					/call buff1
 					/delay 2s
 					}
 				/if (!${Target.Buff[${buff2}].ID} && ${Target.Type.Equal[PC]}) {
+					/echo *** Casting ${buff2} on ${NearestSpawn[${p}, pc radius 150].Name} ***
 					/call buff2
 					/delay 2s
 					}

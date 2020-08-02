@@ -30,6 +30,7 @@ Sub cycletarget
 			/if (${Select[${Target.Class.ShortName},WAR,SHD,PAL]}>0) {
 				/delay 2s ${Target.Buff[${buff1}].ID}
 				/if (!${Target.Buff[${buff1}].ID} && ${Target.Type.Equal[PC]}) {
+					/echo *** Casting ${buff1} on ${NearestSpawn[${p}, pc radius 150].Name} ***
 					/call buff1
 					/delay 2s
 					}
