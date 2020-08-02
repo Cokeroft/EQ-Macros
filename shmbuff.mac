@@ -77,13 +77,13 @@ Sub cycletarget
 					/delay 2s
 					}
 				/if (!${Target.Buff[${buff4}].ID} && ${Target.Type.Equal[PC]}) {
-					/echo *** Casting ${buff4 on ${NearestSpawn[${p}, pc radius 150].Name} ***
+					/echo *** Casting ${buff4} on ${NearestSpawn[${p}, pc radius 150].Name} ***
 					/call buff4
 					/delay 2s
 					}
 				/goto :finished
 				}
-			/if (${Select[${Target.Class.ShortName},CLR,SHM,WIZ,MAG,ENC,NEC,DRU]}>0) {
+			/if (${Select[${Target.Class.ShortName},CLR,SHM,DRU]}>0) {
 				/delay 2s ${Target.Buff[${buff3}].ID}
 				/delay 2s ${Target.Buff[${buff4}].ID}
 				/if (!${Target.Buff[${buff3}].ID} && ${Target.Type.Equal[PC]}) {
@@ -162,3 +162,4 @@ Sub CheckGlobalCooldown
 }
 
 /return	
+		
