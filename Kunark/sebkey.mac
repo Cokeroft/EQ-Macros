@@ -1,0 +1,54 @@
+|Seb Key turnin for alts
+#turbo 80
+Sub Main
+:loop
+
+/if (!${FindItemCount[Medallion of the Kunzar]}==0) /call kunzarMissing
+/if (!${FindItemCount[Medallion of the Nathsar]}==0) /call nathsarMissing
+/if (${FindItemCount[Medallion of the Nathsar]}>0 && ${FindItemCount[Medallion of the Kunzar]}>0) /call medallionTurnin
+/delay 5s
+/goto :loop
+/return
+
+|--------------------------------------------------------------------------------
+Sub medallionTurnin
+|--------------------------------------------------------------------------------
+
+:loop
+/echo going to turnin keys
+/nav spawn Emperor Ganak
+/delay 5s
+
+/target Emperor Ganak
+
+			/itemnotify "Medallion of the Kunzar" leftmouseup
+			/delay 1s
+			/click left target
+			/delay 1s
+			/delay 5s ${Window[GiveWnd].Open}
+			/if (${Window[GiveWnd].Open}) /notify GiveWnd GVW_Give_Button leftmouseup
+			/delay 3s
+			/itemnotify "Medallion of the Nathsar" leftmouseup
+			/delay 1s
+			/if (${Window[GiveWnd].Open}) /notify GiveWnd GVW_Give_Button leftmouseup
+			/delay 2s
+			/echo "Keys turned in, you should now have Trakanon's Idol in your bags!
+/return
+
+|--------------------------------------------------------------------------------	
+Sub kunzarMissing
+|--------------------------------------------------------------------------------
+	/echo Missing Medallion of the Kunzar, go kill froglok forager
+	/echo Ending the macro!
+	/delay 2s
+	/mac end
+/return
+
+|--------------------------------------------------------------------------------	
+Sub nathsarMissing
+|--------------------------------------------------------------------------------
+	/echo Missing Medallion of the Nathsar, go kill a froglok hunter
+	/echo Ending the macro!
+	/delay 2s
+	/mac end
+/return
