@@ -1,0 +1,44 @@
+|--------------------------------------------------------------------------------
+| Only turn on during Dragon Fear fights
+|--------------------------------------------------------------------------------
+
+Sub Main
+/declare fear1 string outer Dragon Roar
+/declare fear2 string outer Dragon Fear
+
+	:mainloop
+	/call fearCheck
+	/goto :mainloop
+
+/return
+
+|--------------------------------------------------------------------------------	
+Sub fearCheck
+|--------------------------------------------------------------------------------
+
+/if (${Me.Buff[${fear1}].ID} || ${Me.Buff[${fear2}].ID) {
+	/echo You have been feared!
+	/nav rwp prefear
+	/call CheckFear
+	/nav waypoint prefear
+	/if (${Nav.Active}==TRUE) {
+		/delay 1s
+		}
+	/echo You have returned to where you got feared. Back to the fight!
+	/return 
+	}
+/delay 1s
+/return
+		
+|--------------------------------------------------------------------------------
+Sub CheckFear
+|--------------------------------------------------------------------------------
+
+/if (${Me.Buff[${fear1}].ID || ${Me.Buff[$fear2}].ID}) {
+	/echo *** Waiting for fear to end ***
+:WaitForFear
+	/delay 1s
+	/if (${Me.Buff[${fear1}].ID || ${Me.Buff[$fear2}].ID}) /goto :WaitForCasting
+}
+
+/return
