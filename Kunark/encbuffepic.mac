@@ -1,0 +1,126 @@
+|--------------------------------------------------------------------------------
+| buff1 = Mana Regen (Clarity/KEI/etc)
+| buff2 = Haste
+| Use the exact name of your spell and have it loaded on your spell gems
+|--------------------------------------------------------------------------------
+
+#warning
+#turbo 80
+#include spell_routines.inc
+
+Sub Main
+/declare buff1 string outer Clarity
+/declare buff2 string outer Speed of the Shissar
+
+
+	:mainloop
+	/call cycletarget
+	/goto :mainloop
+
+/return
+
+|--------------------------------------------------------------------------------	
+Sub cycletarget
+|--------------------------------------------------------------------------------
+/declare p int local 1
+/declare players int local ${SpawnCount[pc radius 150]}
+/echo Found ${players} to buff!
+
+		/for p 1 to ${players}
+			/target id ${NearestSpawn[${p}, pc radius 150].ID}
+			/delay 5
+			/if (${Select[${Target.Class.ShortName},NEC]}==0) {
+				/if (${Select[${Target.Class.ShortName},SHM,CLR,ENC,DRU]}>0) {
+					/delay 2s ${Target.Buff[${buff1}].ID}
+					/if (!${Target.Buff[${buff1}].ID} && ${Target.Type.Equal[PC]}) {
+						/echo *** Casting ${buff1} on ${NearestSpawn[${p}, pc radius 150].Name} ***
+						/call buff1
+						/delay 2s
+						/goto :finished
+						}
+					}
+				/if (${Select[${Target.Class.ShortName},ROG,MNK]}>0) {
+					/delay 2s ${Target.Buff[${buff2}].ID}
+					/if (!${Target.Buff[${buff2}].ID} && ${Target.Type.Equal[PC]}) {
+						/echo *** Casting ${buff2} on ${NearestSpawn[${p}, pc radius 150].Name} ***
+						/call buff2
+						/delay 2s
+						/goto :finished
+						}
+					}
+				/if (${Select[${Target.Class.ShortName},RNG]}>0) {
+					/delay 2s ${Target.Buff[${buff1}].ID} 
+					/delay 2s ${Target.Buff[${buff2}].ID}
+					/if (!${Target.Buff[${buff1}].ID} && ${Target.Type.Equal[PC]}) {
+						/echo *** Casting ${buff1} on ${NearestSpawn[${p}, pc radius 150].Name} ***
+						/call buff1
+						/delay 2s
+						}
+					/if (!${Target.Buff[${buff2}].ID} && ${Target.Type.Equal[PC]}) {
+						/echo *** Casting ${buff2} on ${NearestSpawn[${p}, pc radius 150].Name} ***
+						/call buff2
+						/delay 2s
+						}
+					/goto :finished
+					}
+				}
+			:finished
+		/call CheckMana
+		/if (!${Me.Sitting}) /sit on
+		/next p
+/return
+
+|--------------------------------------------------------------------------------	
+Sub buff1
+|--------------------------------------------------------------------------------
+	/useit Infinite
+	/call CheckCasting
+	/call CheckGlobalCooldown
+/return
+"
+|--------------------------------------------------------------------------------	
+Sub buff2
+|--------------------------------------------------------------------------------
+
+	/useit Staff of the Serpent
+	/call CheckCasting
+	/call CheckGlobalCooldown
+/return
+
+|--------------------------------------------------------------------------------
+Sub CheckCasting
+|--------------------------------------------------------------------------------
+
+		/if (${Me.Casting.ID}) {
+			/echo *** Waiting to finish casting. ***
+		:WaitForCasting
+			/delay 1s
+			/if (${Me.Casting.ID}) /goto :WaitForCasting
+		}
+
+		/return
+		
+|---------------------------------------------------------------------------------
+| SUB: Check Global Cooldown
+|---------------------------------------------------------------------------------
+Sub CheckGlobalCooldown
+
+/if (${Me.SpellInCooldown}) {
+    /echo *** Waiting on global spell cool down. ***
+    :WaitForCooldown
+    /delay 5
+    /if (${Me.SpellInCooldown}) /goto :WaitForCooldown
+}
+
+/return	
+
+|--------------------------------------------------------------------------------	
+Sub CheckMana
+|--------------------------------------------------------------------------------
+	/if (${Me.PctMana}<10) {
+		/if (!${Me.Sitting}) /sit on
+		/echo *** Low Mana, medding for 90s ***
+		/delay 90s
+		/echo *** Resuming buffing, currently at ${Me.PctMana}% mana!
+		}
+/return

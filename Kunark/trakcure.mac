@@ -1,0 +1,90 @@
+|--------------------------------------------------------------------------------
+| Only turn on during Trakanon fight
+| If you have any potions, it will drink that. If not, it will send a message to your shaman for a pcure
+| Change your shaman name right below here to have that work
+|--------------------------------------------------------------------------------
+
+Sub Main
+/declare shaman string outer Cokeslows
+/declare poisonAntidote string outer Ethira's Poison Antidote
+/declare poisonName string outer Poison Breath
+
+
+	:mainloop
+	/call poisonCheck
+	/goto :mainloop
+
+/return
+
+|--------------------------------------------------------------------------------	
+Sub poisonCheck
+|--------------------------------------------------------------------------------
+/declare antidoteCount int local ${FindItemCount[Ethira's Poison Antidote]}
+/echo You have ${antidoteCount} poison cure potions left!
+
+/if (${Me.Buff[Poison Breath].ID} && !${Me.CombatState.Equal[COMBAT]} && ${antidoteCount}>0) {
+	/echo Drinking a Poison Andidote!
+	/call usePotion
+	/delay 2s
+	/delay 13s
+	/return 
+	}
+	
+/if (${Me.Buff[Poison Breath].ID} && ${Me.CombatState.Equal[COMBAT]} && ${antidoteCount}==0) {
+	/echo Asking Shaman for a cure!
+	/call shamanCure
+	/return
+	}
+	
+/if (!${Me.Buff[Poison Breath].ID}) {
+	/echo No Poison found! Checking again in 15 seconds
+	/delay 15s
+	/return
+}
+/return
+
+|--------------------------------------------------------------------------------	
+Sub usePotion
+|--------------------------------------------------------------------------------
+	/useit ${poisonAntidote}
+	/delay 1s
+	/call CheckCasting
+	/call CheckGlobalCooldown
+	/echo Potion drank!
+/return
+
+|--------------------------------------------------------------------------------	
+Sub shamanCure
+|--------------------------------------------------------------------------------
+	/bct ${shaman} //db ${Me.CleanName} pcure
+	/echo Cure Request Sent!
+	/delay 15s
+/return
+
+
+|--------------------------------------------------------------------------------
+Sub CheckCasting
+|--------------------------------------------------------------------------------
+
+		/if (${Me.Casting.ID}) {
+			/echo *** Waiting to finish casting. ***
+		:WaitForCasting
+			/delay 1s
+			/if (${Me.Casting.ID}) /goto :WaitForCasting
+		}
+
+		/return
+		
+|---------------------------------------------------------------------------------
+| SUB: Check Global Cooldown
+|---------------------------------------------------------------------------------
+Sub CheckGlobalCooldown
+
+/if (${Me.SpellInCooldown}) {
+    /echo *** Waiting on global spell cool down. ***
+    :WaitForCooldown
+    /delay 5
+    /if (${Me.SpellInCooldown}) /goto :WaitForCooldown
+}
+
+/return	
