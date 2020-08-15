@@ -22,7 +22,7 @@ Sub poisonCheck
 /declare antidoteCount int local ${FindItemCount[Ethira's Poison Antidote]}
 /echo You have ${antidoteCount} poison cure potions left!
 
-/if (${Me.Buff[Poison Breath].ID} && !${Me.CombatState.Equal[COMBAT]} && ${antidoteCount}>0) {
+/if (${Me.Buff[${poisonName}].ID} && !${Me.CombatState.Equal[COMBAT]} && ${antidoteCount}>0) {
 	/echo Drinking a Poison Andidote!
 	/call usePotion
 	/delay 2s
@@ -30,13 +30,13 @@ Sub poisonCheck
 	/return 
 	}
 	
-/if (${Me.Buff[Poison Breath].ID} && ${Me.CombatState.Equal[COMBAT]} && ${antidoteCount}==0) {
+/if (${Me.Buff[${poisonName}].ID} && ${Me.CombatState.Equal[COMBAT]} && ${antidoteCount}==0) {
 	/echo Asking Shaman for a cure!
 	/call shamanCure
 	/return
 	}
 	
-/if (!${Me.Buff[Poison Breath].ID}) {
+/if (!${Me.Buff[${poisonName}].ID}) {
 	/echo No Poison found! Checking again in 15 seconds
 	/delay 15s
 	/return
