@@ -1,0 +1,223 @@
+|--------------------------------------------------------------------------------
+| buff1 = Strength
+| buff2 = Agility
+| buff3 = Dexterity
+| buff4 = Stamina
+| buff5 = Focus
+| Use the exact name of your spell and have it loaded on your spell gems
+| If you do not have all of the 5 buffs, do not run this!
+|--------------------------------------------------------------------------------
+
+#warning
+#turbo 80
+#include spell_routines.inc
+
+
+Sub Main
+/declare buff1 string outer Maniacal Strength
+/declare buff2 string outer Deliriously Nimble
+/declare buff3 string outer Mortal Deftness
+/declare buff4 string outer Riotous Health
+/declare buff5 string outer Talisman of Kragg
+
+/declare groupBuff1 string outer Talisman of the Rhino
+/declare groupBuff2 string outer Talisman of the Cat
+/declare groupBuff3 string outer Talisman of the Raptor
+/declare groupBuff4 string outer Talisman of the Brute
+
+
+	:mainloop
+	/call cycletarget
+	/goto :mainloop
+
+/return
+
+|--------------------------------------------------------------------------------	
+Sub cycletarget
+|--------------------------------------------------------------------------------
+/declare p int local 1
+/declare players int local ${SpawnCount[pc radius 150]}
+/memspellset Buffs
+/echo Found ${players} to buff!
+
+		/for p 1 to ${players}
+			/target id ${NearestSpawn[${p}, pc radius 150].ID}
+			/delay 2s
+			/if (${Select[${Target.Class.ShortName},WAR,SHD,PAL]}>0) {
+				/delay 2s ${Target.Buff[${buff1}].ID}
+				/delay 2s ${Target.Buff[${buff2}].ID}
+				/delay 2s ${Target.Buff[${buff3}].ID}
+				/delay 2s ${Target.Buff[${buff4}].ID}
+				/delay 2s ${Target.Buff[${buff5}].ID}
+				/if (!${Target.Buff[${buff1}].ID} && ${Target.Type.Equal[PC]}) {
+					/call buff1
+					/delay 2s
+					}
+				/if (!${Target.Buff[${buff2}].ID} && ${Target.Type.Equal[PC]}) {
+					/call buff2
+					/delay 2s
+					}
+				/if (!${Target.Buff[${buff3}].ID} && ${Target.Type.Equal[PC]}) {
+					/call buff3
+					/delay 2s
+					}
+				/if (!${Target.Buff[${buff4}].ID} && ${Target.Type.Equal[PC]}) {
+					/call buff4
+					/delay 2s
+					}
+				/if (!${Target.Buff[${buff5}].ID} && ${Target.Type.Equal[PC]}) {
+					/call buff5
+					/delay 2s
+					}
+				/goto :finished
+				}
+				
+			/if (${Select[${Target.Class.ShortName},MNK,ROG,RNG,BRD]}>0) {
+				/delay 2s ${Target.Buff[${buff1}].ID}
+				/delay 2s ${Target.Buff[${buff3}].ID}
+				/delay 2s ${Target.Buff[${buff4}].ID}
+				/delay 2s ${Target.Buff[${buff5}].ID}
+				/if (!${Target.Buff[${buff1}].ID} && ${Target.Type.Equal[PC]}) {
+					/call buff1
+					/delay 2s
+					}
+				/if (!${Target.Buff[${buff3}].ID} && ${Target.Type.Equal[PC]}) {
+					/call buff3
+					/delay 2s
+					}
+				/if (!${Target.Buff[${buff4}].ID} && ${Target.Type.Equal[PC]}) {
+					/call buff4
+					/delay 2s
+					}
+				/if (!${Target.Buff[${buff5}].ID} && ${Target.Type.Equal[PC]}) {
+					/call buff5
+					/delay 2s
+					}
+				/goto :finished
+				}
+			/if (${Select[${Target.Class.ShortName},CLR,SHM,DRU]}>0) {
+				/delay 2s ${Target.Buff[${buff4}].ID}
+				/delay 2s ${Target.Buff[${buff5}].ID}
+				/if (!${Target.Buff[${buff4}].ID} && ${Target.Type.Equal[PC]}) {
+					/call buff4
+					/delay 2s
+					}
+				/if (!${Target.Buff[${buff5}].ID} && ${Target.Type.Equal[PC]}) {
+					/call buff5
+					/delay 2s
+					}
+				/goto :finished
+				}
+			/if (${Select[${Target.Class.ShortName},ENC,NEC,MAG,WIZ]}>0) {
+				/delay 2s ${Target.Buff[${buff4}].ID}
+				/if (!${Target.Buff[${buff4}].ID} && ${Target.Type.Equal[PC]}) {
+					/call buff4
+					/delay 2s
+					}
+				/goto :finished
+				}
+			
+			:finished
+		/call CheckMana
+		/if (!${Me.Sitting}) /sit on
+		/next p
+/return
+
+|--------------------------------------------------------------------------------	
+Sub buff1
+|--------------------------------------------------------------------------------
+/if (!${Target.Buff[${groupBuff1}].ID}) {
+	/echo *** Casting ${buff1} on ${Target.CleanName} ***
+    /casting "${buff1}"
+	/call CheckCasting
+	/call CheckGlobalCooldown
+}
+/if (${Target.Buff[${groupBuff1}].ID}) {
+	/echo Player has Group Buff ${groupBuff1} already, not casting!
+}
+/return
+|--------------------------------------------------------------------------------	
+Sub buff2
+|--------------------------------------------------------------------------------
+/if (!${Target.Buff[${groupBuff2}].ID}) {
+	/echo *** Casting ${buff2} on ${Target.CleanName} ***
+    /casting "${buff2}"
+	/call CheckCasting
+	/call CheckGlobalCooldown
+}
+/if (${Target.Buff[${groupBuff2}].ID}) {
+	/echo Player has Group Buff ${groupBuff2} already, not casting!
+}
+/return
+|--------------------------------------------------------------------------------	
+Sub buff3
+|--------------------------------------------------------------------------------
+/if (!${Target.Buff[${groupBuff3}].ID}) {
+	/echo *** Casting ${buff3} on ${Target.CleanName} ***
+    /casting "${buff3}"
+	/call CheckCasting
+	/call CheckGlobalCooldown
+}
+/if (${Target.Buff[${groupBuff3}].ID}) {
+	/echo Player has Group Buff ${groupBuff3} already, not casting!
+}
+/return
+|--------------------------------------------------------------------------------	
+Sub buff4
+|--------------------------------------------------------------------------------
+/if (!${Target.Buff[${groupBuff4}].ID}) {
+	/echo *** Casting ${buff4} on ${Target.CleanName} ***
+    /casting "${buff4}"
+	/call CheckCasting
+	/call CheckGlobalCooldown
+}
+/if (${Target.Buff[${groupBuff4}].ID}) {
+	/echo Player has Group Buff ${groupBuff4} already, not casting!
+}
+/return
+|--------------------------------------------------------------------------------	
+Sub buff5
+|--------------------------------------------------------------------------------
+/echo *** Casting ${buff5} on ${Target.CleanName} ***
+/casting "${buff5}"
+/call CheckCasting
+/call CheckGlobalCooldown
+/return
+
+|--------------------------------------------------------------------------------
+Sub CheckCasting
+|--------------------------------------------------------------------------------
+
+/if (${Me.Casting.ID}) {
+	/echo *** Waiting to finish casting. ***
+:WaitForCasting
+	/delay 1s
+	/if (${Me.Casting.ID}) /goto :WaitForCasting
+}
+
+/return
+
+|---------------------------------------------------------------------------------
+| SUB: Check Global Cooldown
+|---------------------------------------------------------------------------------
+Sub CheckGlobalCooldown
+
+/if (${Me.SpellInCooldown}) {
+    /echo *** Waiting on global spell cool down. ***
+    :WaitForCooldown
+    /delay 5
+    /if (${Me.SpellInCooldown}) /goto :WaitForCooldown
+}
+
+/return	
+		
+|--------------------------------------------------------------------------------	
+Sub CheckMana
+|--------------------------------------------------------------------------------
+/if (${Me.PctMana}<10) {
+	/if (!${Me.Sitting}) /sit on
+	/echo *** Low Mana, medding for 90s ***
+	/delay 90s
+	/echo *** Resuming buffing, currently at ${Me.PctMana}% mana!
+	}
+/return
